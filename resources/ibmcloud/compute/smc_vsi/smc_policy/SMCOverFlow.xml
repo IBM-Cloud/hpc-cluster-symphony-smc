@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Policy name="Overflow" description="Overflow" owner=""
+  xmlns="http://www.ibm.com/Symphony/schema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ibm.com/Symphony/schema ../7.3.2/schema/SmcPlacementPolicy.xsd">
+
+  <Clusters enabled="true">
+    <PrimaryGroup enabled="true">
+      <!-- replace the HPCCluster-1, HPCCluster-2, HPCCluster-3 with your lone cluster name -->
+      <Cluster name="HPCCluster-1" rank="1"/>
+      <Cluster name="HPCCluster-2" rank="2"/>
+      <Cluster name="HPCCluster-3" rank="3"/>
+    </PrimaryGroup>
+    <OverflowGroup enableOverflow="false" enabled="true"/>
+  </Clusters>
+
+  <StaticFilters enabled="true" operator="AND">
+  </StaticFilters>
+
+  <DynamicFilters enabled="true" operator="OR">
+    <!-- Filter for HPCCluster-1 -->
+    <DynamicFilter operator="AND" enabled="true">
+      <Expression operator="LTE" type="Float">
+        <LHS name="activeTasksPerDeservedSlots" source="applications"/>
+        <RHS value="10"/>
+      </Expression>
+      <Expression operator="EQ" type="String">
+        <LHS name="name" source="cluster"/>
+        <RHS value="HPCCluster-1"/>
+      </Expression>
+    </DynamicFilter>
+
+    <!-- Filter for HPCCluster-2 only -->
+    <DynamicFilter operator="AND" enabled="true">
+      <Expression operator="LTE" type="Float">
+        <LHS name="activeTasksPerDeservedSlots" source="applications"/>
+        <RHS value="10"/>
+      </Expression>
+      <Expression operator="EQ" type="String">
+        <LHS name="name" source="cluster"/>
+        <RHS value="HPCCluster-2"/>
+      </Expression>
+    </DynamicFilter>
+
+    <!-- Filter for HPCCluster-3 -->
+    <DynamicFilter operator="AND" enabled="true">
+      <Expression operator="LTE" type="Float">
+        <LHS name="activeTasksPerDeservedSlots" source="applications"/>
+        <RHS value="10"/>
+      </Expression>
+      <Expression operator="EQ" type="String">
+        <LHS name="name" source="cluster"/>
+        <RHS value="HPCCluster-3"/>
+      </Expression>
+    </DynamicFilter>
+  </DynamicFilters>
+
+  <Rankings enabled="true"/>
+
+  <Application workloadRedirection="session" workloadRedirectionFailover="disabled"
+               topNClusterForTaskRedirection="3" topNClusterShareValues="5,3,2"
+               resubmitOnZeroResourcesTimeoutMinutes="0" rerankIntervalMinutes="0"
+               useClusterMigrationRanks="disabled" migrateToHigherRankClusterIntervalMinutes="0"/>
+</Policy>

@@ -1,0 +1,154 @@
+{
+  "name": "hpcc-symphony-multicluster-test",
+  "type": [
+    "terraform_v1.3"
+  ],
+  "location": "us-east",
+  "resource_group": "Default",
+  "description": "",
+  "tags": ["HPCC", "Multicluster"],
+  "template_repo": {
+    "url": "https://github.ibm.com/workload-eng-services/hpc-cluster-symphony-smc"
+  },
+  "template_data": [
+    {
+      "folder": ".",
+      "type": "terraform_v1.3",
+      "variablestore": [
+        {
+          "name": "cluster_prefix",
+          "value": "hpcc-smc",
+          "type": "string",
+          "secure": false,
+          "description": "Prefix that is used to name the Symphony Multi cluster and IBM Cloud resources that are provisioned to build the Symphony Multi cluster instance. You cannot create more than one instance of the Symphony Multi cluster with the same name. Make sure that the name is unique. Enter a prefix name, such as my-hpcc."
+        },
+        {
+          "name": "cluster_id",
+          "value": "HpccTest",
+          "type": "string",
+          "secure": false,
+          "description": "ID of the cluster used by Symphony Multi Cluster for configuration of resources. This must be up to 39 alphanumeric characters including the underscore (_), the hyphen (-), and the period (.). Other special characters and spaces are not allowed. Do not use the name of any host or user as the name of your cluster. You cannot change it after installation."
+        },
+        {
+          "name": "resource_group",
+          "value": "Default",
+          "type": "string",
+          "secure": false,
+          "description":"Resource group name from your IBM Cloud account where the VPC resources should be deployed. [Learn more](https://cloud.ibm.com/docs/account?topic=account-rgs)."
+        },
+        {
+          "name": "smc_zone",
+          "value": "[\"Please fill here\"]",
+          "type": "list(string)",
+          "secure": false,
+          "description": "IBM Cloud zone name within the selected region where the Symphony Multi Cluster resources should be deployed. Note: smc_zone support maximum of 3 zone. Examples as [\"us-south-1\",\"eu-gb-3\",\"jp-tok-2\"] or [\"us-south-1\",\"us-south-1\",\"us-south-3\"] or [\"jp-tok-3\",\"au-syd-3\"] or [\"jp-tok-2\"]. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-creating-a-vpc-in-a-different-region#get-zones-using-the-cli)."
+        },
+        {
+          "name": "lone_vpc_name",
+          "value": "[]",
+          "type": "list(string)",
+          "secure": false,
+          "description": "Name of an existing Lone Symphony VPC, lone_vpc_name and lone_vpc_region should be in same order. If no value is given, then need to add existing_lone_vpc manually with SMC transit_gateway. Note: lone_vpc_name support maximum of 3 existing_lone_vpc_name. [Learn more](https://cloud.ibm.com/docs/vpc)."
+        },
+        {
+          "name": "lone_vpc_region",
+          "value": "[]",
+          "type": "list(string)",
+          "secure": false,
+          "description": "Name of the IBM Cloud region where the existing Lone Symphony VPC, lone_vpc_name and lone_vpc_region should be in same order (Examples: us-east, us-south, etc.). Note: lone_vpc_region support maximum of 3 existing_lone_vpc_region. For more information, see [Region and data center locations for resource deployment](https://cloud.ibm.com/docs/overview?topic=overview-locations)."
+        },
+        {
+          "name": "smc_image_name",
+          "value": "hpcc-symphony732-rhel86-smc-v1",
+          "type": "string",
+          "secure": false,
+          "description":"Name of the custom image that you want to use to create virtual server instances in your IBM Cloud account to deploy the IBM Symphony Multi Cluster. By default, the automation uses a base image with additional software packages mentioned [here](https://cloud.ibm.com/docs/hpc-spectrum-symphony#create-custom-image). If you would like to include your application-specific binary files, follow the instructions in [ Planning for custom images ](https://cloud.ibm.com/docs/vpc?topic=vpc-planning-custom-images) to create your own custom image and use that to build the IBM Symphony cluster through this offering."
+        },
+        {
+          "name": "smc_host_instance_type",
+          "value": "bx2-4x16",
+          "type": "string",
+          "secure": false,
+          "description": "Specify the virtual server instance profile type name to be used to create the Symphony Multi Cluster host. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles)."
+        },
+        {
+          "name": "bastion_host_instance_type",
+          "value": "bx2-2x8",
+          "type": "string",
+          "secure": false,
+          "description": "Specify the virtual server instance profile type name to be used to create the bastion node for the Symphony Multi Cluster. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles)."
+        },
+        {
+          "name": "ssh_key_name",
+          "value": "Please fill here",
+          "type": "string",
+          "secure": false,
+          "description":"Comma-separated list of names of the SSH key configured in your IBM Cloud account that is used to establish a connection to the Symphony resources SMC vsi. NOTE: SSH key-name should be unique in all region with same name. Ensure the SSH key is present in the same resource group and region where the cluster is being provisioned. If you do not have an SSH key in your IBM Cloud account, create one by using the instructions given here. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-ssh-keys)."
+        },
+        {
+          "name": "dns_domain",
+          "value": "smc.ibmhpc.com",
+          "type": "string",
+          "secure": false,
+          "description":"IBM Cloud DNS Services domain name to be used for the Symphony Multi Cluster host."
+        },
+        {
+          "name": "api_key",
+          "value": "Please fill here",
+          "type": "string",
+          "secure": true,
+          "description": "This is the API key for IBM Cloud account in which the Symphony Multi cluster needs to be deployed. [Learn more](https://cloud.ibm.com/docs/account?topic=account-userapikey)."
+        },
+        {
+          "name": "sym_license_confirmation",
+          "value": "true",
+          "type": "string",
+          "secure": false,
+          "description": "Confirm your use of IBM Symphony Multi Cluster licenses. By entering 'true' for the property you have agreed to one of the two conditions. 1. You are using the software in production and confirm you have sufficient licenses to cover your use under the International Program License Agreement (IPLA). 2. You are evaluating the software and agree to abide by the International License Agreement for Evaluation of Programs (ILAE). NOTE: Failure to comply with licenses for production use of software is a violation of IBM International Program License Agreement. [Learn more](https://www.ibm.com/software/passportadvantage/programlicense.html)."
+        },
+        {
+          "name": "remote_allowed_ips",
+          "value": "[\"Please fill here\"]",
+          "type": "list(string)",
+          "secure": true,
+          "description": "Comma-separated list of IP addresses that can access the Symphony Multi Cluster instance through an SSH interface. For security purposes, provide the public IP addresses assigned to the devices that are authorized to establish SSH connections (for example, [\"169.45.117.34\"]). To fetch the IP address of the device, use https://ipv4.icanhazip.com/."
+        },
+        {
+          "name": "login_cidr_block",
+          "value": "[\"10.10.4.0/28\"]",
+          "type": "list(string)",
+          "secure": true,
+          "description": "IBM Cloud VPC address prefixes that are needed for VPC creation. Provide a CIDR address prefix for VPC creation. For more information, see [Bring your own subnet](https://cloud.ibm.com/docs/vpc?topic=vpc-configuring-address-prefixes)."
+        },
+        {
+          "name": "lone_symphony_cidr_block",
+          "value": "[]",
+          "type": "list(string)",
+          "secure": false,
+          "description": "Comma-separated list of CIDR blocks which used in Spectrum Symphony Cluster(Lone Symphony Cluster)."
+        },
+        {
+          "name": "primary_cidr_block",
+          "value": "10.10.0.0/24",
+          "type": "string",
+          "secure": true,
+          "description": "IBM Cloud VPC address prefixes that are needed for VPC creation. Provide a CIDR address prefix for Primary VPC creation. For more information, see [Bring your own subnet](https://cloud.ibm.com/docs/vpc?topic=vpc-configuring-address-prefixes)."
+        },
+        {
+          "name": "secondary_cidr_block",
+          "value": "10.20.0.0/24",
+          "type": "string",
+          "secure": true,
+          "description": "IBM Cloud VPC address prefixes that are needed for VPC creation. Provide a CIDR address prefix for Secondary VPC creation. For more information, see [Bring your own subnet](https://cloud.ibm.com/docs/vpc?topic=vpc-configuring-address-prefixes)."
+        },
+        {
+          "name": "secondary_candidate_cidr_block",
+          "value": "10.30.0.0/24",
+          "type": "string",
+          "secure": true,
+          "description": "IBM Cloud VPC address prefixes that are needed for VPC creation. Provide a CIDR address prefix for Secondary Candidate VPC creation. For more information, see [Bring your own subnet](https://cloud.ibm.com/docs/vpc?topic=vpc-configuring-address-prefixes)."
+        }
+      ]
+    }
+  ]
+}
