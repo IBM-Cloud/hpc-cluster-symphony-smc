@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Policy name="Shortest Completion Time" description="Shortest Completion Time" owner=""
+  xmlns="http://www.ibm.com/Symphony/schema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ibm.com/Symphony/schema ../7.3.2/schema/SmcPlacementPolicy.xsd">
+
+    <Clusters>
+        <!-- PrimaryGroup can statically rank clusters. If no clusters are specified here, all clusters
+             enabled for placement by the cluster admin user will be considered in the policy -->
+        <PrimaryGroup>
+        </PrimaryGroup>
+
+        <!-- Setting enableOverflow to false prevents the usage of overflow clusters defined by the SMC cluster admin user -->
+        <OverflowGroup enableOverflow="false">
+        </OverflowGroup>
+    </Clusters>
+
+    <DynamicFilters operator="AND">
+        <DynamicFilter operator="OR" enabled="false">
+            <!-- the clusters total number of active tasks per deserved slot is less than 200 tasks for the application -->
+            <Expression operator="LTE" type="Float">
+                <LHS name="activeTasksPerDeservedSlots" source="applications"/>
+                <RHS value="200"/>
+            </Expression>
+        </DynamicFilter>
+    </DynamicFilters>
+
+    <Rankings>
+        <!-- sort by clusters with the earliest completion time -->
+        <Variable name="activeTasksCompletionSeconds" source="applications" order="ascending" />
+    </Rankings>
+
+    <Application workloadRedirection="session" workloadRedirectionFailover="disabled"
+                 topNClusterForTaskRedirection="3" topNClusterShareValues="5,3,2"
+                 resubmitOnZeroResourcesTimeoutMinutes="0" rerankIntervalMinutes="0"
+                 useClusterMigrationRanks="disabled" migrateToHigherRankClusterIntervalMinutes="0"/>
+
+</Policy>

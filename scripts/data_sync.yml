@@ -1,0 +1,39 @@
+---
+- name: Syncing SMC Primary data to SMC Secondary
+  become: yes
+  hosts: smc_host
+  tasks:
+   - name: sync_data_multicluster_smc
+     synchronize:
+        src: /data/HPCMultiCluster/sym732/multicluster/smc/
+        dest: /data/HPCMultiCluster/sym732/multicluster/smc/
+        recursive: yes
+        archive: no
+        checksum: yes
+        delete: yes
+        group: yes
+        owner: yes
+        rsync_opts:
+         - "--chmod=750"
+         - "--chown=egoadmin:root"
+         - "--exclude=smcm.xml"
+         - "--exclude=gui_service.xml"
+         - "--exclude=rest_service.xml"
+         - "--exclude=rs.xml"
+   - name: sync_data_multicluster_eservice_rs
+     synchronize:
+       src: /data/HPCMultiCluster/sym732/multicluster/eservice/rs/
+       dest: /data/HPCMultiCluster/sym732/multicluster/eservice/rs/
+       recursive: yes
+       archive: no
+       checksum: yes
+       delete: yes
+       group: yes
+       owner: yes
+       rsync_opts:
+         - "--chmod=750"
+         - "--chown=egoadmin:root"
+         - "--exclude=smcm.xml"
+         - "--exclude=gui_service.xml"
+         - "--exclude=rest_service.xml"
+         - "--exclude=rs.xml"
